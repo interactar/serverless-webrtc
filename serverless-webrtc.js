@@ -9,7 +9,7 @@ var ansi = require('ansi');
 var cursor = ansi(process.stdout);
 
 var pc = null;
-var offer = null;
+var offer = process.argv[3] || null;
 var answer = null;
 
 /* 1. Global settings, data and functions. */
@@ -30,7 +30,7 @@ var pcSettings = [
 ];
 
 var pendingDataChannels = {};
-var dataChannels = {}
+var dataChannels = {};
 
 var rl = readline.createInterface({
   input: process.stdin,
@@ -41,9 +41,14 @@ if (process.argv[2] == "--create") {
   makeOffer();
 }
 else {
-  rl.question("Please paste your offer:\n", function(offer) {
-    getOffer(offer);
-  });
+  if (offer === null) { //ugly repeated twice.
+     rl.question("Please paste your offer:\n", function(offer) {
+        getOffer(offer);
+     });
+  } else {
+	  console.log('Ussing offer'+offer);
+        getOffer(offer);
+  }
 }
 
 function doHandleError(error) {
